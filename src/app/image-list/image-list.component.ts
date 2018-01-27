@@ -8,31 +8,35 @@ import { ImageService } from '../shared/image.service';
 })
 export class ImageListComponent implements OnInit {
   images: any[];
-  imagesFound: boolean = false;
-  searching: boolean = false;
+  imagesFound = false;
+  searching = false;
+  searchQuery = 'cake';
 
-  handleSuccess(data){
+  handleSuccess(data) {
     this.imagesFound = true;
     this.images = data.hits;
     console.log(data.hits);
   }
 
-  handleError(error){
+  handleError(error) {
     console.log(error);
   }
 
-  constructor(private _imageService : ImageService) { }
+  constructor(private _imageService: ImageService) { }
 
-  searchImages(query: string){
+  searchImages(query: string) {
     this.searching = true;
     return this._imageService.getImage(query).subscribe(
       data => this.handleSuccess(data),
       error => this.handleError(error),
       () => this.searching = false
-    )
+    );
   }
 
   ngOnInit() {
+    // tslint:disable-next-line:curly
+    if (this.searchQuery)
+    this.searchImages(this.searchQuery);
   }
 
 }
